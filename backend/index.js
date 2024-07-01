@@ -1,7 +1,7 @@
 //aim: connect to database and start the server
 
 //access app
-import app from "server.js";
+import app from "./server.js";
 //access database
 import mongodb from "mongodb";
 //access environmental variables
@@ -15,13 +15,13 @@ async function main() {
   dotenv.config();
 
   //create an instance of MongoClient and pass the URI
-  const client = new mongodb.MongoClient(process.env.MOVIEREVIEWS_BU_URI);
+  const client = new mongodb.MongoClient(process.env.MOVIEREVIEWS_DB_URI);
   //retrieve port from environment variables, otherwise use port 8000
   const port = process.env.PORT || 8000;
 
   try {
     //Connect to the MongoDB cluster
-    await client.connect();//returns a promise.block further execution
+    await client.connect(); //returns a promise.block further execution
     //start the server
     app.listen(port, () => {
       console.log("server is running on port: " + port);
