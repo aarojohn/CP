@@ -9,12 +9,8 @@ router.route("/").get(MoviesController.apiGetMovies); // first route available i
 // MoviesController class and apiGetMovies method
 // will be called when there is a request for the URL
 // localhost:5050/api/v1/movies
-
-// next route available in project which will handle
-// post, put and delete http requests
-// post = add new review so call apiPostReview
-// put = edit existing review so call apiUpdateReview
-// delete = delete existing review so call apiDeleteReview
+router.route("/id/:id").get(MoviesController.apiGetMovieById);
+router.route("/ratings").get(MoviesController.apiGetRatings);
 router
   .route("/review")
   .post(ReviewsController.apiPostReview)
