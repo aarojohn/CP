@@ -35,6 +35,7 @@ const MoviesList = (props) => {
   }, [currentPage]);
 
   const retrieveNextPage = () => {
+    console.log("Accepting Search Mode")
     setLoading(true);
     if (currentSearchMode === "findByTitle") {
       findByTitle();
@@ -46,12 +47,16 @@ const MoviesList = (props) => {
   };
 
   const retrieveMovies = () => {
+    console.log("Retrieving Movies")
     setLoading(true);
     setCurrentSearchMode("");
     MovieDataService.getAll(currentPage)
       .then((response) => {
+        console.log("After retrieving movies")
         console.log(response.data);
         setMovies(response.data.movies);
+        
+        console.log(`Values in setMovies \n ${response.data.movies}`)
         setCurrentPage(response.data.page);
         setEntriesPerPage(response.data.entries_per_page);
       })
@@ -62,9 +67,11 @@ const MoviesList = (props) => {
   };
 
   const retrieveRatings = () => {
+    console.log("Retrieving Ratings");
     setLoading(true);
     MovieDataService.getRatings()
       .then((response) => {
+        console.log("After retrieving by raitings");
         console.log(response.data);
         setRatings(["All Ratings"].concat(response.data));
       })
@@ -75,12 +82,16 @@ const MoviesList = (props) => {
   };
 
   const onChangeSearchTitle = (e) => {
+    
     const searchTitle = e.target.value;
+    console.log(`onChangeSearchTitle triggered :${searchTitle}`);
     setSearchTitle(searchTitle);
   };
 
   const onChangeSearchRating = (e) => {
+    
     const searchRating = e.target.value;
+    console.log(`onChangeSearchRating triggered :${searchRating}`);
     setSearchRating(searchRating);
   };
 
@@ -88,8 +99,11 @@ const MoviesList = (props) => {
     setLoading(true);
     try {
       const response = await MovieDataService.find(query, by, currentPage);
+      console.log("async find triggered")
       console.log(response.data);
+      
       setMovies(response.data.movies);
+      console.log(`Values in setMovies \n ${response.data.movies}`);
     } catch (error) {
       console.error("Error fetching movies:", error);
     } finally {
@@ -99,11 +113,13 @@ const MoviesList = (props) => {
 
   const findByTitle = () => {
     setCurrentSearchMode("findByTitle");
+    console.log(`find by title 2 `);
     find(searchTitle, "title");
   };
 
   const findByRating = () => {
     setCurrentSearchMode("findByRating");
+    console.log(`find by rating 2 `);
     if (searchRating === "All Ratings") {
       retrieveMovies();
     } else {

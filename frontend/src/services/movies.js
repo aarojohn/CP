@@ -7,14 +7,17 @@ class MovieDataServices {
   }
 
   getAll(page = 0) {
+    console.log("Get All Movies Trigerred");
     return axios.get(`${this.baseUrl}/?page=${page}`);
   }
 
   get(id) {
+    console.log("Get By Id Trigerred");
     return axios.get(`${this.baseUrl}/id/${id}`);
   }
 
   find(query, by = "title", page = 0) {
+    console.log("Find Movies Trigerred");
     return axios.get(`${this.baseUrl}/?${by}=${query}&page=${page}`);
   }
 
@@ -33,6 +36,7 @@ class MovieDataServices {
   }
 
   getRatings() {
+    console.log("Get All Ratings Trigerred");
     return axios.get(`${this.baseUrl}/ratings`);
   }
 }
