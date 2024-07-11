@@ -6,8 +6,9 @@ const app = express();
 
 // Allow requests from your frontend domain
 const corsOptions = {
-  origin: ["*"],
-  credentials:true // Some legacy browsers (e.g., IE11) may not understand 204
+  origin: "*",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
 };
 
 app.use(cors(corsOptions));
