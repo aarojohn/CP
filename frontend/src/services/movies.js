@@ -1,15 +1,13 @@
 import axios from "axios";
-
 const backendUrl =
-  "https://moviereviewbackend-alv7024fw-johns-projects-eee3f51c.vercel.app";
-
+  "https://moviereviewbackend-johns-projects-eee3f51c.vercel.app";
 class MovieDataServices {
   constructor() {
     this.baseUrl = `${backendUrl}/api/v1/movies`;
   }
 
   getAll(page = 0) {
-    return axios.get(`${this.baseUrl}?page=${page}`);
+    return axios.get(`${this.baseUrl}/?page=${page}`);
   }
 
   get(id) {
@@ -17,7 +15,7 @@ class MovieDataServices {
   }
 
   find(query, by = "title", page = 0) {
-    return axios.get(`${this.baseUrl}?${by}=${query}&page=${page}`);
+    return axios.get(`${this.baseUrl}/?${by}=${query}&page=${page}`);
   }
 
   createReview(data) {
