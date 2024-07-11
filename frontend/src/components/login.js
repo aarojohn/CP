@@ -36,7 +36,7 @@ const Login = (props) => {
           />
         </Form.Group>
         <Form.Group>
-          <Form.Label>ID</Form.Label>
+          <Form.Label>Password</Form.Label>
           <Form.Control
             type="text"
             placeholder="Enter id"
