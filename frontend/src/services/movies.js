@@ -1,36 +1,41 @@
 import axios from "axios";
 
+const backendUrl =
+  "https://moviereviewbackend-alv7024fw-johns-projects-eee3f51c.vercel.app";
+
 class MovieDataServices {
+  constructor() {
+    this.baseUrl = `${backendUrl}/api/v1/movies`;
+  }
+
   getAll(page = 0) {
-    return axios.get(`http://localhost:5000/api/v1/movies?page=${page}`);
+    return axios.get(`${this.baseUrl}?page=${page}`);
   }
 
   get(id) {
-    return axios.get(`http://localhost:5000/api/v1/movies/id/${id}`);
+    return axios.get(`${this.baseUrl}/id/${id}`);
   }
 
   find(query, by = "title", page = 0) {
-    return axios.get(
-      `http://localhost:5000/api/v1/movies?${by}=${query}&page=${page}`
-    );
+    return axios.get(`${this.baseUrl}?${by}=${query}&page=${page}`);
   }
 
   createReview(data) {
-    return axios.post("http://localhost:5000/api/v1/movies/review", data);
+    return axios.post(`${this.baseUrl}/review`, data);
   }
 
   updateReview(data) {
-    return axios.put("http://localhost:5000/api/v1/movies/review", data);
+    return axios.put(`${this.baseUrl}/review`, data);
   }
 
   deleteReview(id, userId) {
-    return axios.delete("http://localhost:5000/api/v1/movies/review", {
+    return axios.delete(`${this.baseUrl}/review`, {
       data: { review_id: id, user_id: userId },
     });
   }
 
   getRatings() {
-    return axios.get("http://localhost:5000/api/v1/movies/ratings");
+    return axios.get(`${this.baseUrl}/ratings`);
   }
 }
 
