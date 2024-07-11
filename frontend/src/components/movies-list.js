@@ -15,6 +15,7 @@ const MoviesList = (props) => {
   const [searchTitle, setSearchTitle] = useState("");
   const [searchRating, setSearchRating] = useState("");
   const [ratings, setRatings] = useState(["All Ratings"]);
+  const [loading, setLoading] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(0);
   const [entriesPerPage, setEntriesPerPage] = useState(0);
@@ -34,12 +35,18 @@ const MoviesList = (props) => {
   }, [currentPage]);
 
   const retrieveNextPage = () => {
-    if (currentSearchMode === "findByTitle") findByTitle();
-    else if (currentSearchMode === "findByRating") findByRating();
-    else retrieveMovies();
+    setLoading(true);
+    if (currentSearchMode === "findByTitle") {
+      findByTitle();
+    } else if (currentSearchMode === "findByRating") {
+      findByRating();
+    } else {
+      retrieveMovies();
+    }
   };
 
   const retrieveMovies = () => {
+    setLoading(true);
     setCurrentSearchMode("");
     MovieDataService.getAll(currentPage)
       .then((response) => {
@@ -50,10 +57,12 @@ const MoviesList = (props) => {
       })
       .catch((e) => {
         console.log(e);
-      });
+      })
+      .finally(() => setLoading(false));
   };
 
   const retrieveRatings = () => {
+    setLoading(true);
     MovieDataService.getRatings()
       .then((response) => {
         console.log(response.data);
@@ -61,7 +70,8 @@ const MoviesList = (props) => {
       })
       .catch((e) => {
         console.log(e);
-      });
+      })
+      .finally(() => setLoading(false));
   };
 
   const onChangeSearchTitle = (e) => {
@@ -74,15 +84,17 @@ const MoviesList = (props) => {
     setSearchRating(searchRating);
   };
 
-  const find = (query, by) => {
-    MovieDataService.find(query, by, currentPage)
-      .then((response) => {
-        console.log(response.data);
-        setMovies(response.data.movies);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+  const find = async (query, by) => {
+    setLoading(true);
+    try {
+      const response = await MovieDataService.find(query, by, currentPage);
+      console.log(response.data);
+      setMovies(response.data.movies);
+    } catch (error) {
+      console.error("Error fetching movies:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const findByTitle = () => {
@@ -136,8 +148,10 @@ const MoviesList = (props) => {
           </Row>
         </Form>
         <Row>
-          {movies.map((movie) => {
-            return (
+          {loading ? (
+            <p>Loading...</p>
+          ) : (
+            movies.map((movie) => (
               <Col key={movie._id}>
                 <Card style={{ width: "18rem" }}>
                   <Card.Img src={movie.poster + "/100px180"} />
@@ -149,8 +163,8 @@ const MoviesList = (props) => {
                   </Card.Body>
                 </Card>
               </Col>
-            );
-          })}
+            ))
+          )}
         </Row>
         <br />
         Showing page: {currentPage}.
