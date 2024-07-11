@@ -27,6 +27,7 @@ app.use("/api/v1/movies", movies);
 // that doesn't exist, wildcard
 // route * returns 404
 app.use("*", (req, res) => {
+  console.log("Requested Path:", req.path);
   res.status(404).json({ error: "requested path not found" });
 });
 // export app as a module so other files can import it
